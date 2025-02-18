@@ -1,4 +1,10 @@
-package com.example.main;
+package api;
+
+import boards.TicTacToeBoard;
+import game.Board;
+import game.GameResult;
+import game.Move;
+import game.Player;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,9 +24,9 @@ public class Main {
             boolean rowComplete = true;
             for (int i = 0; i < 3; i++) {
                 rowComplete = true;
-                String firstCharacter = board1.cells[i][0];
+                String firstCharacter = board1.getCell(i,0);
                 for (int j = 1; j < 3; j++) {
-                    if (!firstCharacter.equals(board1.cells[i][j])) {
+                    if (!firstCharacter.equals(board1.getCell(i,j))) {
                         rowComplete = false;
                         break;
                     }
@@ -32,9 +38,9 @@ public class Main {
             boolean colComplete = true;
             for (int i = 0; i < 3; i++) {
                 colComplete = true;
-                String firstCharacter = board1.cells[i][0];
+                String firstCharacter = board1.getCell(i,0);
                 for (int j = 1; j < 3; j++) {
-                    if (!firstCharacter.equals(board1.cells[j][i])) {
+                    if (!firstCharacter.equals(board1.getCell(j,i))) {
                         colComplete = false;
                         break;
                     }
@@ -44,9 +50,9 @@ public class Main {
                 }
             }
             boolean diagonalComplete = true;
-            String firstCharacter = board1.cells[0][0];
+            String firstCharacter = board1.getCell(0,0);
             for (int i = 1; i < 3; i++) {
-                if (!firstCharacter.equals(board1.cells[i][i])) {
+                if (!firstCharacter.equals(board1.getCell(i,i))) {
                     diagonalComplete = false;
                     break;
                 }
@@ -55,9 +61,9 @@ public class Main {
                 return new GameResult(true, firstCharacter);
             }
             boolean reverseDiagonalComplete = true;
-            firstCharacter = board1.cells[0][2];
+            firstCharacter = board1.getCell(0,2);
             for (int i = 0; i < 2; i++) {
-                if (!firstCharacter.equals(board1.cells[3 - i - 1][3 - i - 1])) {
+                if (!firstCharacter.equals(board1.getCell(3 - i - 1 ,3 - i - 1))) {
                     reverseDiagonalComplete = false;
                     break;
                 }
@@ -70,7 +76,7 @@ public class Main {
             int count=0;
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
-                    if (board1.cells[i][j]!=null){
+                    if (board1.getCell(i,j)!=null){
                         count ++;
                     }
                 }
@@ -85,30 +91,6 @@ public class Main {
             return new GameResult(true, "-");
         }
    }
-
-    class Board{
-
-    }
-
-    class TicTacToeBoard extends Board{
-        String cells[][]= new String[3][3];
-
-    }
-    class Player{
-
-    }
-    class Move{
-
-    }
-    class GameResult{
-        boolean isOver;
-        String winner;
-
-        public GameResult(boolean isOver, String winner){
-            this.isOver=isOver;
-            this.winner=winner;
-        }
-    }
 
 
 }
