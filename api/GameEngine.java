@@ -6,21 +6,25 @@ import game.GameResult;
 import game.Move;
 import game.Player;
 
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Suiiiii");
-    }
-    public Board start(){
-        return new Board();
+public class GameEngine {
+    public Board start(String type){
+        if(type.equals("TicTacToe")){
+            return new TicTacToeBoard();
+        } else{
+            throw new IllegalArgumentException();
+        }
     }
 
    public void move(Board board, Player player, Move move){
-
+        if(board instanceof TicTacToeBoard board1){
+            board1.setCell(player.symbol(), move.getCell());
+        } else{
+            throw new IllegalArgumentException();
+        }
    }
 
    public GameResult isComplete(Board board){
-        if(board instanceof TicTacToeBoard) {
-            TicTacToeBoard board1 = (TicTacToeBoard) board;
+        if(board instanceof TicTacToeBoard board1) {
             boolean rowComplete = true;
             for (int i = 0; i < 3; i++) {
                 rowComplete = true;
