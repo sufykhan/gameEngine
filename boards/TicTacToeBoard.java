@@ -1,7 +1,7 @@
 package boards;
 
 import game.Board;
-import game.Cell;
+import game.Move;
 
 public class TicTacToeBoard extends Board {
     String[][] cells = new String[3][3];
@@ -10,8 +10,9 @@ public class TicTacToeBoard extends Board {
         return this.cells[i][j];
     }
 
-    public void setCell(String symbol, Cell cell){
-        cells[cell.getRow()][cell.getCol()]=symbol;
+    @Override
+    public void move(Move move){
+        cells[move.getCell().getRow()][move.getCell().getCol()]=move.getPlayer().symbol();
     }
 
     @Override
