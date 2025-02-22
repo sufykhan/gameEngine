@@ -1,18 +1,44 @@
 package boards;
 
 import game.Board;
+import game.Cell;
 import game.Move;
 
-public class TicTacToeBoard extends Board {
+import java.util.Arrays;
+
+public class TicTacToeBoard implements Board {
     String[][] cells = new String[3][3];
 
-    public String getCell(int i,int j){
+    public String getSymbol(int i,int j){
         return this.cells[i][j];
+    }
+
+    public void setCell(Cell cell, String symbol) {
+        if(cells[cell.getRow()][cell.getCol()] == null){
+            cells[cell.getRow()][cell.getCol()] = symbol;
+        } else{
+            throw new IllegalArgumentException();
+        }
+    }
+
+    @Override
+    public TicTacToeBoard copy(){
+        TicTacToeBoard ticTacToeBoard =  new TicTacToeBoard();
+
+        for(int i=0;i<3;i++){
+            ticTacToeBoard.cells[i] = Arrays.copyOf(this.cells[i], 3); // This the deep copy, no reference to other cells
+/*
+          for(int j=0;j<3;j++){               This is the shallow copy and contains the reference of original board
+                 ticTacToeBoard.cells[i][j] = cells[i][j];
+           }
+*/
+        }
+        return ticTacToeBoard;
     }
 
     @Override
     public void move(Move move){
-        cells[move.getCell().getRow()][move.getCell().getCol()]=move.getPlayer().symbol();
+        setCell(move.getCell(),move.getPlayer().symbol());
     }
 
     @Override
