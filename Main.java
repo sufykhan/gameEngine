@@ -1,4 +1,4 @@
-import api.AIPlayer;
+import api.AIEngine;
 import api.GameEngine;
 import api.RuleEngine;
 import game.Board;
@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("GAME START");
         GameEngine gameEngine = new GameEngine();
-        AIPlayer gameManager = new AIPlayer();
+        AIEngine aiEngine = new AIEngine();
         RuleEngine ruleEngine = new RuleEngine();
         Board board = gameEngine.start("TicTacToe");
         Scanner scanner = new Scanner(System.in);
@@ -27,7 +27,7 @@ public class Main {
             gameEngine.move(board,opponentMove);
             System.out.println(board);
             if(!ruleEngine.getState(board).isOver()){
-                Move computerMove = gameManager.suggestMove(computer,board);
+                Move computerMove = aiEngine.suggestMove(computer,board);
                 gameEngine.move(board,computerMove);
                 System.out.println(board);
             }

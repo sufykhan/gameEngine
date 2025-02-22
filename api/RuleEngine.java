@@ -25,7 +25,7 @@ public class RuleEngine {
             }
             boolean colComplete = true;
             for (int i = 0; i < 3; i++) {
-                String firstCharacter = board1.getCell(i,0);
+                String firstCharacter = board1.getCell(0,i);
                 colComplete =  firstCharacter!=null;
                 if(firstCharacter!=null){
                     for (int j = 1; j < 3; j++) {
@@ -57,8 +57,8 @@ public class RuleEngine {
             firstCharacter = board1.getCell(0,2);
             boolean reverseDiagonalComplete = firstCharacter!=null;
             if(firstCharacter!=null){
-                for (int i = 0; i < 2; i++) {
-                    if (!firstCharacter.equals(board1.getCell(3 - i - 1 ,3 - i - 1))) {
+                for (int i = 1; i < 3; i++) {
+                    if (!firstCharacter.equals(board1.getCell(i ,3 - i - 1))) {
                         reverseDiagonalComplete = false;
                         break;
                     }
