@@ -50,3 +50,12 @@ Step 7: Making tests extensible, we now don't rely on AiEngine to suggest move, 
 Step 8: Using Prototype Design Pattern: It is used when we wanted to deep or shallow clone the object. It is beneficial when new Object creation is expensive
 
 Step 9: We used Lambda functions to adhere to the DRY principle.
+
+Step 10: Making Code Extensible Using the Open-Closed Principle
+
+Key Points:
+
+1. Our RuleEngine evaluates multiple scenarios to determine the game state. Each scenario is represented as a Rule.
+2. Initially, adding a new rule required modifying the getState function, making the approach inflexible and violating the Open-Closed Principle.
+3. To enhance extensibility, we introduced a Rule class and a set of rules that can be dynamically added to the RuleEngine via its constructor.
+4. This design allows new rules to be incorporated without modifying existing logic, making the system more scalable and maintainable.
