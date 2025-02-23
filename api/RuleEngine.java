@@ -16,17 +16,17 @@ public class RuleEngine {
             Function<Integer,String> getDiagonal = (i)->board1.getSymbol(i,i);
             Function<Integer,String> getRevDiagonal = (i)->board1.getSymbol(i,3-i-1);
 
-            GameState rowWin = findStreak(getRow);
-            if(rowWin!=null) return rowWin;
+            GameState rowWin = outerTraversal(getRow);
+            if(rowWin.isOver()) return rowWin;
 
-            GameState colWin = findStreak(getCol);
-            if(colWin!=null) return colWin;
+            GameState colWin = outerTraversal(getCol);
+            if(colWin.isOver()) return colWin;
 
-            GameState diagonalWin = findDiagonalStreak(getDiagonal);
-            if(diagonalWin!=null) return diagonalWin;
+            GameState diagonalWin = traverse(getDiagonal);
+            if(diagonalWin.isOver()) return diagonalWin;
 
-            GameState reverseDiagonalWin = findDiagonalStreak(getRevDiagonal);
-            if(reverseDiagonalWin!=null) return reverseDiagonalWin;
+            GameState reverseDiagonalWin = traverse(getRevDiagonal);
+            if(reverseDiagonalWin.isOver()) return reverseDiagonalWin;
 
             int count=0;
             for (int i = 0; i < 3; i++) {
@@ -47,23 +47,22 @@ public class RuleEngine {
         }
     }
 
-    public GameState findStreak(BiFunction<Integer, Integer,String> next){
+    public GameState outerTraversal(BiFunction<Integer, Integer,String> next){
+        GameState result = new GameState(false, "-");
         for (int i = 0; i < 3; i++) {
-            boolean possibleStreak = true;
-            for (int j = 0; j < 3; j++) {
-                if (next.apply(i,j)==null || !next.apply(i,0).equals(next.apply(i,j))) {
-                    possibleStreak = false;
-                    break;
-                }
-            }
-            if (possibleStreak) {
-                return new GameState(true, next.apply(i,0));
+            int finalI = i;
+            Function<Integer,String> nextValue = (j) -> next.apply(finalI,j);
+            GameState traversal = traverse(nextValue);
+            if(traversal.isOver()) {
+                result = traversal;
+                break;
             }
         }
-        return null;
+        return result;
     }
 
-    public GameState findDiagonalStreak(Function<Integer,String> next){
+    public GameState traverse(Function<Integer,String> next){
+        GameState result = new GameState(false, "-");
         boolean possibleStreak = true;
         for (int i = 0; i < 3; i++) {
             if (next.apply(i)== null || !next.apply(0).equals(next.apply(i))) {
@@ -72,8 +71,8 @@ public class RuleEngine {
             }
         }
         if (possibleStreak) {
-            return new GameState(true, next.apply(0));
+            result =  new GameState(true, next.apply(0));
         }
-        return null;
+        return result;
     }
 }
