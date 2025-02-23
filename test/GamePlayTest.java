@@ -8,7 +8,6 @@ import game.Cell;
 import game.Move;
 import game.Player;
 
-import java.util.Scanner;
 
 import org.junit.Assert;
 import org.junit.Before;
