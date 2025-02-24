@@ -1,6 +1,7 @@
 package game;
 
 public  interface Board {
-    public abstract void move(Move move);
+    void move(Move move);
 //    public abstract Board copy();
+    String getSymbol(int i, int j); // Breaking LisKov Substitution Principle (Subclass like chess cannot have getSymbol)
 }
