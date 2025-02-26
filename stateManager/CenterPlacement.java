@@ -12,7 +12,7 @@ public class CenterPlacement implements Placement{
 
     private static CenterPlacement centerPlacement;
 
-    public synchronized static Placement get(){
+    public synchronized static CenterPlacement get(){
         if(centerPlacement!= null) return centerPlacement;
         return new CenterPlacement();
     }

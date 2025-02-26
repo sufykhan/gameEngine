@@ -12,7 +12,7 @@ public class CornerPlacement implements Placement{
 
     private static CornerPlacement cornerPlacement;
 
-    public synchronized static Placement get(){
+    public synchronized static CornerPlacement get(){
         if(cornerPlacement!= null) return cornerPlacement;
         return new CornerPlacement();
     }

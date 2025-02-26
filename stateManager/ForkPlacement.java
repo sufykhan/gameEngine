@@ -9,7 +9,7 @@ public class ForkPlacement implements Placement{
 
     private static ForkPlacement forkPlacement;
 
-    public synchronized static Placement get(){
+    public synchronized static ForkPlacement get(){
         if(forkPlacement!= null) return forkPlacement;
         return new ForkPlacement();
     }
@@ -29,6 +29,7 @@ public class ForkPlacement implements Placement{
         GameInfo gameInfo = ruleEngine.getInfo(board);
         Cell forkCell = null;
         if(gameInfo.hasAFork()){
+            System.out.println("GAME HAS A FORK AT -> "+ gameInfo.getForkCell().getRow() + ","+gameInfo.getForkCell().getCol()+" \n");
             forkCell = gameInfo.getForkCell();
             return forkCell;
         }

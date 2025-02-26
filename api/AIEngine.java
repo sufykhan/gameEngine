@@ -3,6 +3,7 @@ package api;
 import boards.TicTacToeBoard;
 import game.*;
 import stateManager.DefensivePlacement;
+import stateManager.OffensivePlacement;
 import stateManager.Placement;
 
 import java.util.Optional;
