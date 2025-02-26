@@ -31,8 +31,7 @@ public class OffensivePlacement implements Placement{
                 if (board.getSymbol(i,j)==null){
                     Move move = new Move(player.flip(), new Cell(i,j));
 
-                    Board boardCopy = board.clone();
-                    boardCopy.move(move);
+                    Board boardCopy = board.dummyMove(move);
                     if(ruleEngine.getState(boardCopy).isOver()){
                         return  new Cell(i,j);
                     }

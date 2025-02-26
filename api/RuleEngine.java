@@ -37,15 +37,13 @@ public class RuleEngine {
             for (int index =0; index <2 ;index++) {
                 for (int i = 0; i < 3; i++) {
                     for (int j = 0; j < 3; j++) {
-                        Board b = ((TicTacToeBoard) board).clone();
                         Player player = new Player(players [index]);
-                        b.move(new Move(player,new Cell(i,j)));
+                        TicTacToeBoard b = ((TicTacToeBoard) board).dummyMove(new Move(player,new Cell(i,j)));
                         boolean canStillWin = false;
                         for (int k = 0; k < 3; k++) {
                             for (int l = 0; l < 3; l++) {
-                               Board b1 = ((TicTacToeBoard) b).clone();
                                forkCell= new Cell(k,l);
-                               b1.move(new Move(player.flip(),new Cell(k,l)));
+                               Board b1 = b.dummyMove(new Move(player.flip(),new Cell(k,l)));
                                if(getState(b1).getWinner().equals(player.flip().symbol())){
                                    canStillWin = true;
                                    break;

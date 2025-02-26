@@ -10,6 +10,7 @@ import java.util.function.Function;
 
 public class TicTacToeBoard implements CellBoard, Cloneable {
     String[][] cells = new String[3][3];
+    History history = new History();
 
     public TicTacToeBoard() {
     }
@@ -19,7 +20,12 @@ public class TicTacToeBoard implements CellBoard, Cloneable {
             this.cells[i] = Arrays.copyOf(board.cells[i], 3); // Deep copy of each row
         }
     }
-    public String getSymbol(int i,int j){
+
+    public History getHistory() {
+        return history;
+    }
+
+    public String getSymbol(int i, int j){
         return this.cells[i][j];
     }
 
@@ -40,9 +46,30 @@ public class TicTacToeBoard implements CellBoard, Cloneable {
         rules.add(new Rule (TicTacToeBoard::countMoves));
         return rules;
     }
+
     @Override
-    public void move(Move move){
+    public TicTacToeBoard copy() {
+        TicTacToeBoard ticTacToeBoard = new TicTacToeBoard();
+        for (int i = 0; i < 3; i++) {
+            System.arraycopy(cells[i], 0, ticTacToeBoard.cells[i], 0, 3);
+        }
+        ticTacToeBoard.history = history;
+        return ticTacToeBoard;
+    }
+
+
+    @Override
+    public TicTacToeBoard move(Move move){
+        TicTacToeBoard boardCopy = copy();
+        history.add(boardCopy);
         setCell(move.getCell(),move.getPlayer().symbol());
+        return this;
+    }
+
+    public TicTacToeBoard dummyMove(Move move){
+        TicTacToeBoard boardCopy = copy();
+        boardCopy.setCell(move.getCell(),move.getPlayer().symbol());
+        return boardCopy;
     }
 
     @Override
