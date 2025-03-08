@@ -1,4 +1,5 @@
 import api.AIEngine;
+import api.EmailService;
 import api.GameEngine;
 import api.RuleEngine;
 import boards.History;
@@ -10,6 +11,8 @@ import game.Player;
 
 import java.util.Scanner;
 
+import static java.util.concurrent.TimeUnit.DAYS;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -19,10 +22,14 @@ public class Main {
         RuleEngine ruleEngine = new RuleEngine();
         Board board = gameEngine.start("TicTacToe");
         Scanner scanner = new Scanner(System.in);
+        Player computer = new Player("O");
+        Player opponent = new Player("X");
+        if(opponent.getUser().activeAfter(1,DAYS)){
+            EmailService emailService = new EmailService();
+            emailService.sendEmail(opponent.getUser(), "We are glad that you are back");
+        }
         while(!ruleEngine.getState(board).isOver()){
             System.out.println("Make your Move");
-            Player computer = new Player("O");
-            Player opponent = new Player("X");
             int row = scanner.nextInt();
             int col = scanner.nextInt();
             Move opponentMove = new Move(opponent,new Cell(row,col));
@@ -37,6 +44,11 @@ public class Main {
         if(board instanceof TicTacToeBoard board1){
             History boardHistory = board1.getHistory();
             boardHistory.printHistory();
+        }
+        // Problem with below approach is that it is not extensible, if link support, image support is needed then we had to change everywhere
+        if(ruleEngine.getState(board).getWinner().equals(opponent.symbol())){
+            EmailService emailService = new EmailService();
+            emailService.sendEmail(opponent.getUser(), "Congratulation , you have won the match");
         }
         System.out.println("Game winner is " + ruleEngine.getState(board).getWinner());
     }
