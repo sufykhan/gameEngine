@@ -2,7 +2,7 @@ package commands.implementation;
 
 import game.User;
 
-public class Send {
+public class NotificationDetails {
 
     User reciever;
     String message;
@@ -15,7 +15,7 @@ public class Send {
         return message;
     }
 
-    public Send(User reciever, String message){
+    public NotificationDetails(User reciever, String message){
         this.reciever = reciever;
         this.message = message;
     }

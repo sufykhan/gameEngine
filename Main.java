@@ -3,10 +3,8 @@ import Service.SMSService;
 import api.*;
 import boards.History;
 import boards.TicTacToeBoard;
-import commands.builder.SendEmailCommandBuilder;
-import commands.builder.SendSMSCommandBuilder;
-import commands.implementation.SendEmailCommand;
-import commands.implementation.SendSMSCommand;
+import commands.builder.EmailCommandBuilder;
+import commands.builder.SMSCommandBuilder;
 import game.Board;
 import game.Cell;
 import game.Move;
@@ -29,7 +27,7 @@ public class Main {
         Player opponent = new Player("X");
         if(opponent.getUser().activeAfter(1,DAYS)){
             EmailService emailService = new EmailService();
-            emailService.execute((SendEmailCommand) new SendEmailCommandBuilder().user(opponent.getUser()).message("Glad, you are back").build());
+            emailService.execute(new EmailCommandBuilder().user(opponent.getUser()).message("Glad, you are back").build());
         }
         while(!ruleEngine.getState(board).isOver()){
             System.out.println("Make your Move");
@@ -51,10 +49,10 @@ public class Main {
         // Problem with below approach is that it is not extensible, if link support, image support is needed then we had to change everywhere
         if(ruleEngine.getState(board).getWinner().equals(opponent.symbol())){
             EmailService emailService = new EmailService();
-            emailService.execute((SendEmailCommand) new SendEmailCommandBuilder().user(opponent.getUser()).message("Congratulations, you won the match").build());
+            emailService.execute(new EmailCommandBuilder().user(opponent.getUser()).message("Congratulations, you won the match").build());
 
             SMSService smsService = new SMSService();
-            smsService.execute((SendSMSCommand) new SendSMSCommandBuilder().user(opponent.getUser()).message("Congratulations, you won the match").build());
+            smsService.execute(new SMSCommandBuilder().user(opponent.getUser()).message("Congratulations, you won the match").build());
         }
         System.out.println("Game winner is " + ruleEngine.getState(board).getWinner());
     }
