@@ -15,6 +15,20 @@ public class TicTacToeBoard implements CellBoard, Cloneable {
     public TicTacToeBoard() {
     }
 
+    public enum Symbol{
+        X("X"),O("O");
+
+        final String symbol;
+
+        Symbol (String o){
+            this.symbol = o;
+        }
+
+        public String getSymbol() {
+            return symbol;
+        }
+    }
+
     private TicTacToeBoard(TicTacToeBoard board) {
         for (int i = 0; i < 3; i++) {
             this.cells[i] = Arrays.copyOf(board.cells[i], 3); // Deep copy of each row

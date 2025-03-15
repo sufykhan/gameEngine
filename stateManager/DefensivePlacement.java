@@ -12,7 +12,7 @@ public class DefensivePlacement implements Placement{
 
     private static DefensivePlacement defensivePlacement;
 
-    public synchronized static Placement get(){
+    public synchronized static DefensivePlacement get(){
             if(defensivePlacement!= null) return defensivePlacement;
             return new DefensivePlacement();
     }

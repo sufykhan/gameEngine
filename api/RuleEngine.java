@@ -2,6 +2,8 @@ package api;
 
 import boards.TicTacToeBoard;
 import game.*;
+import stateManager.DefensivePlacement;
+import stateManager.OffensivePlacement;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,36 +30,30 @@ public class RuleEngine {
         }
     }
 
-    public GameInfo getInfo(Board board) {
-        if (board instanceof TicTacToeBoard) {
-            TicTacToeBoard ticTacToeBoard = (TicTacToeBoard) board;
+    public GameInfo getInfo(CellBoard board) {
+        if (board instanceof TicTacToeBoard ticTacToeBoard) {
             GameState gameState = getState(ticTacToeBoard);
-            final String [] players = new String[] {"X","O"};
-            Cell forkCell = null;
-            for (int index =0; index <2 ;index++) {
+            for(TicTacToeBoard.Symbol symbol : TicTacToeBoard.Symbol.values() ){
+                Player player = new Player(symbol.getSymbol());
                 for (int i = 0; i < 3; i++) {
                     for (int j = 0; j < 3; j++) {
-                        Player player = new Player(players [index]);
-                        TicTacToeBoard b = ((TicTacToeBoard) board).dummyMove(new Move(player,new Cell(i,j)));
-                        boolean canStillWin = false;
-                        for (int k = 0; k < 3; k++) {
-                            for (int l = 0; l < 3; l++) {
-                               forkCell= new Cell(k,l);
-                               Board b1 = b.dummyMove(new Move(player.flip(),new Cell(k,l)));
-                               if(getState(b1).getWinner().equals(player.flip().symbol())){
-                                   canStillWin = true;
-                                   break;
-                               }
+                        if(ticTacToeBoard.getSymbol(i,j)!=null) continue;
+                        TicTacToeBoard ticTacToeBoard1 = ticTacToeBoard.dummyMove(new Move(player,new Cell(i,j)));
+                        DefensivePlacement defensivePlacement = DefensivePlacement.get();
+                        Optional<Cell> defensiveMove = defensivePlacement.place(ticTacToeBoard1,player.flip());
+                        if(defensiveMove.isPresent()){
+                            ticTacToeBoard1 = ticTacToeBoard1.dummyMove(new Move(player.flip(),defensiveMove.get()));
+                            OffensivePlacement offensivePlacement = OffensivePlacement.get();
+                            Optional<Cell> offensiveMove = offensivePlacement.place(ticTacToeBoard1,player);
+                            if(offensiveMove.isPresent()){
+                                return new GameInfoBuilder()
+                                        .isOver(gameState.isOver())
+                                        .winner(gameState.getWinner())
+                                        .hasFork(true)
+                                        .player(player)
+                                        .forkCell(new Cell(i,j))
+                                        .build();
                             }
-                        }
-                        if(canStillWin) {
-                            return new GameInfoBuilder()
-                                    .isOver(gameState.isOver())
-                                    .winner(gameState.getWinner())
-                                    .hasFork(true)
-                                    .player(player.flip())
-                                    .forkCell(forkCell)
-                                    .build();
                         }
                     }
                 }

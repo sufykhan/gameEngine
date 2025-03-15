@@ -11,7 +11,7 @@ import java.util.Optional;
 public class OffensivePlacement implements Placement{
     private static OffensivePlacement offensivePlacement;
 
-    public synchronized static Placement get(){
+    public synchronized static OffensivePlacement get(){
         if(offensivePlacement!= null) return offensivePlacement;
         return new OffensivePlacement();
     }
