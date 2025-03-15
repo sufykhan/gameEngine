@@ -75,18 +75,114 @@ public class AIEngine {
         }
         return getBasicMove(player, board);
     }
+    abstract static class State {
+        protected Player player;
+        protected TicTacToeBoard board;
+        protected int threshold;
+
+        public State(Player player, TicTacToeBoard board, int threshold) {
+            this.player = player;
+            this.board = board;
+            this.threshold = threshold;
+        }
+
+        abstract Cell placeCell();  // Determine the move
+        abstract State next();  // Determine the next state
+    }
+
+    // Opening state: Moves based on Basic Strategy
+    class Opening extends State {
+        public Opening(Player player, TicTacToeBoard board, int threshold) {
+            super(player, board, threshold);
+        }
+
+        @Override
+        Cell placeCell() {
+            return getBasicMove(player, board);
+        }
+
+        @Override
+        State next() {
+            int moveCount = countMoves(board);
+            if (moveCount < threshold) {
+                return this;  // Remain in Opening
+            } else if (moveCount < threshold + 1) {
+                return new MidGame(player, board, threshold);
+            } else {
+                return new EndGame(player, board, threshold);
+            }
+        }
+    }
+
+    // MidGame state: Moves based on Smart Strategy
+    class MidGame extends State {
+        public MidGame(Player player, TicTacToeBoard board, int threshold) {
+            super(player, board, threshold);
+        }
+
+        @Override
+        Cell placeCell() {
+            return getSmartMove(player, board);
+        }
+
+        @Override
+        State next() {
+            int moveCount = countMoves(board);
+            if (moveCount < threshold) {
+                return new Opening(player, board, threshold);
+            } else if (moveCount < threshold + 1) {
+                return this;  // Remain in MidGame
+            } else {
+                return new EndGame(player, board, threshold);
+            }
+        }
+    }
+
+    // EndGame state: Moves based on Optimal Strategy
+    class EndGame extends State {
+        public EndGame(Player player, TicTacToeBoard board, int threshold) {
+            super(player, board, threshold);
+        }
+
+        @Override
+        Cell placeCell() {
+            return getOptimalMove(player, board);
+        }
+
+        @Override
+        State next() {
+            return this;  // Stay in EndGame
+        }
+    }
 
     public Move suggestMove(Player player, Board board){
         if(board instanceof TicTacToeBoard board1){
             Cell suggestedMove = null;
             int threshold = 2;
-            if(countMoves(board1) < threshold){
-                suggestedMove = getBasicMove(player,board1);
-            } else if(countMoves(board1)< threshold + 1) {
-                suggestedMove = getSmartMove(player,board1);
-            } else{
-                suggestedMove = getOptimalMove(player, board1);
+            State state;
+
+            // Determine initial state based on countMoves()
+            int moveCount = countMoves(board1);
+            if (moveCount < threshold) {
+                state = new Opening(player, board1, threshold);
+            } else if (moveCount < threshold + 1) {
+                state = new MidGame(player, board1, threshold);
+            } else {
+                state = new EndGame(player, board1, threshold);
             }
+
+            // Get the suggested move based on the current state
+            suggestedMove = state.placeCell();
+
+//            if(countMoves(board1) < threshold){
+//                suggestedMove = getBasicMove(player,board1);
+//            } else if(countMoves(board1)< threshold + 1) {
+//                suggestedMove = getSmartMove(player,board1);
+//            } else{
+//                suggestedMove = getOptimalMove(player, board1);
+//            }
+
+            //NOTE: By using State Design pattern also, we violates OCP, because we don't have clear state transition
             if(suggestedMove != null) return new Move(player,suggestedMove);
             throw new IllegalStateException();
         } else{
