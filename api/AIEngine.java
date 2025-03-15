@@ -23,7 +23,7 @@ public class AIEngine {
             for (int j = 0; j < 3; j++) {
                 if (board.getSymbol(i,j)==null){
                     Move move = new Move(player, new Cell(i,j));
-                    Board boardCopy = board.copy();
+                    Board boardCopy = board.clone();
                     boardCopy.move(move);
                     if(ruleEngine.getState(boardCopy).isOver()){
                         return move;
@@ -38,7 +38,7 @@ public class AIEngine {
                 if (board.getSymbol(i,j)==null){
                     Move move = new Move(player.flip(), new Cell(i,j));
 
-                    Board boardCopy = board.copy();
+                    Board boardCopy = board.clone();
                     boardCopy.move(move);
                     if(ruleEngine.getState(boardCopy).isOver()){
                         return  new Move(player, new Cell(i,j));

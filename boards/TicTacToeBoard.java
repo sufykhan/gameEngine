@@ -6,9 +6,17 @@ import game.Move;
 
 import java.util.Arrays;
 
-public class TicTacToeBoard implements Board {
+public class TicTacToeBoard implements Board, Cloneable {
     String[][] cells = new String[3][3];
 
+    public TicTacToeBoard() {
+    }
+
+    private TicTacToeBoard(TicTacToeBoard board) {
+        for (int i = 0; i < 3; i++) {
+            this.cells[i] = Arrays.copyOf(board.cells[i], 3); // Deep copy of each row
+        }
+    }
     public String getSymbol(int i,int j){
         return this.cells[i][j];
     }
@@ -19,21 +27,6 @@ public class TicTacToeBoard implements Board {
         } else{
             throw new IllegalArgumentException();
         }
-    }
-
-    @Override
-    public TicTacToeBoard copy(){
-        TicTacToeBoard ticTacToeBoard =  new TicTacToeBoard();
-
-        for(int i=0;i<3;i++){
-            ticTacToeBoard.cells[i] = Arrays.copyOf(this.cells[i], 3); // This the deep copy, no reference to other cells
-/*
-          for(int j=0;j<3;j++){               This is the shallow copy and contains the reference of original board
-                 ticTacToeBoard.cells[i][j] = cells[i][j];
-           }
-*/
-        }
-        return ticTacToeBoard;
     }
 
     @Override
@@ -52,5 +45,10 @@ public class TicTacToeBoard implements Board {
             result.append("\n");
         }
         return result.toString();
+    }
+
+    @Override
+    public TicTacToeBoard clone() {
+        return new TicTacToeBoard(this);
     }
 }
