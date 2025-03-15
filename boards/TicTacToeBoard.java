@@ -2,16 +2,13 @@ package boards;
 
 import api.Rule;
 import api.RuleSet;
-import game.Board;
-import game.Cell;
-import game.GameState;
-import game.Move;
+import game.*;
 
 import java.util.Arrays;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class TicTacToeBoard implements Board, Cloneable {
+public class TicTacToeBoard implements CellBoard, Cloneable {
     String[][] cells = new String[3][3];
 
     public TicTacToeBoard() {
@@ -36,11 +33,11 @@ public class TicTacToeBoard implements Board, Cloneable {
 
     public static RuleSet getRules(){
         RuleSet rules  = new RuleSet();
-        rules.add(new Rule<TicTacToeBoard>((board)->outerTraversal(board::getSymbol)));
-        rules.add(new Rule<TicTacToeBoard> ((board)->outerTraversal((i,j)-> board.getSymbol(j,i))));
-        rules.add(new Rule<TicTacToeBoard> ((board)->traverse((i)-> board.getSymbol(i,i))));
-        rules.add(new Rule<TicTacToeBoard> ((board)->traverse((i)-> board.getSymbol(i,2-i))));
-        rules.add(new Rule<> (TicTacToeBoard::countMoves));
+        rules.add(new Rule((board)->outerTraversal(board::getSymbol)));
+        rules.add(new Rule ((board)->outerTraversal((i,j)-> board.getSymbol(j,i))));
+        rules.add(new Rule ((board)->traverse((i)-> board.getSymbol(i,i))));
+        rules.add(new Rule ((board)->traverse((i)-> board.getSymbol(i,2-i))));
+        rules.add(new Rule (TicTacToeBoard::countMoves));
         return rules;
     }
     @Override
@@ -67,7 +64,7 @@ public class TicTacToeBoard implements Board, Cloneable {
     }
 
 
-    public static GameState countMoves(TicTacToeBoard board1){
+    public static GameState countMoves(CellBoard board1){
         int count=0;
         GameState gameState = new GameState(false, "-");
         for (int i = 0; i < 3; i++) {
