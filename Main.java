@@ -1,6 +1,8 @@
 import api.AIEngine;
 import api.GameEngine;
 import api.RuleEngine;
+import boards.History;
+import boards.TicTacToeBoard;
 import game.Board;
 import game.Cell;
 import game.Move;
@@ -32,7 +34,10 @@ public class Main {
                 System.out.println(board);
             }
         }
-
+        if(board instanceof TicTacToeBoard board1){
+            History boardHistory = board1.getHistory();
+            boardHistory.printHistory();
+        }
         System.out.println("Game winner is " + ruleEngine.getState(board).getWinner());
     }
 

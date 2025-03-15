@@ -33,8 +33,7 @@ public class DefensivePlacement implements Placement{
             for (int j = 0; j < 3; j++) {
                 if (board.getSymbol(i, j) == null) {
                     Move move = new Move(player.flip(), new Cell(i,j));
-                    Board boardCopy = board.clone();
-                    boardCopy.move(move);
+                    Board boardCopy = board.dummyMove(move);
                     if (ruleEngine.getState(boardCopy).isOver()) {
                         return new Cell(i,j);
                     }
