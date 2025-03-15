@@ -49,7 +49,7 @@ public class Main {
         // Problem with below approach is that it is not extensible, if link support, image support is needed then we had to change everywhere
         if(ruleEngine.getState(board).getWinner().equals(opponent.symbol())){
             EmailService emailService = new EmailService();
-            emailService.execute(new EmailCommandBuilder().user(opponent.getUser()).message("Congratulations, you won the match").build());
+            emailService.execute(new EmailCommandBuilder().user(opponent.getUser()).message("Congratulations, you won the match").link("https://suii.com").build());
 
             SMSService smsService = new SMSService();
             smsService.execute(new SMSCommandBuilder().user(opponent.getUser()).message("Congratulations, you won the match").build());
