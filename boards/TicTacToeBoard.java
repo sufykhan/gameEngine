@@ -34,12 +34,12 @@ public class TicTacToeBoard implements Board, Cloneable {
         }
     }
 
-    public static RuleSet<TicTacToeBoard> getRules(){
-        RuleSet<TicTacToeBoard> rules  = new RuleSet<>();
-        rules.add(new Rule<>((board)->outerTraversal(board::getSymbol)));
-        rules.add(new Rule<> ((board)->outerTraversal((i,j)-> board.getSymbol(j,i))));
-        rules.add(new Rule<> ((board)->traverse((i)-> board.getSymbol(i,i))));
-        rules.add(new Rule<> ((board)->traverse((i)-> board.getSymbol(i,2-i))));
+    public static RuleSet getRules(){
+        RuleSet rules  = new RuleSet();
+        rules.add(new Rule<TicTacToeBoard>((board)->outerTraversal(board::getSymbol)));
+        rules.add(new Rule<TicTacToeBoard> ((board)->outerTraversal((i,j)-> board.getSymbol(j,i))));
+        rules.add(new Rule<TicTacToeBoard> ((board)->traverse((i)-> board.getSymbol(i,i))));
+        rules.add(new Rule<TicTacToeBoard> ((board)->traverse((i)-> board.getSymbol(i,2-i))));
         rules.add(new Rule<> (TicTacToeBoard::countMoves));
         return rules;
     }
